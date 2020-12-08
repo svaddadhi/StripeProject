@@ -1,9 +1,9 @@
 const stripeAPI = require('../stripe');
 
-const createCheckOutSession = async (req, res) => {
+async function createCheckoutSession(req, res) {
   const domainUrl = process.env.WEB_APP_URL;
   const { line_items, customer_email } = req.body;
-  //check req body has line items and email
+  // check req body has line items and email
   if (!line_items || !customer_email) {
     return res
       .status(400)
@@ -22,7 +22,6 @@ const createCheckOutSession = async (req, res) => {
       cancel_url: `${domainUrl}/canceled`,
       shipping_address_collection: { allowed_countries: ['GB', 'US'] },
     });
-
     res.status(200).json({ sessionId: session.id });
   } catch (error) {
     console.log(error);
@@ -30,6 +29,6 @@ const createCheckOutSession = async (req, res) => {
       .status(400)
       .json({ error: 'an error occured, unable to create session' });
   }
-};
+}
 
-module.exports = createCheckOutSession;
+module.exports = createCheckoutSession;
